@@ -6,7 +6,6 @@ build-proto:
 	@echo "Compile All Proto"
 	protoc --go_out=./generated --go-grpc_out=./generated api/**/*.proto
 
-
 # Build core-account
 build-core-account: clean build-proto
 	@echo "Building core-account..."
