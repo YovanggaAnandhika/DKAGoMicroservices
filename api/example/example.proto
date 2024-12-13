@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+// Menentukan paket untuk file .proto ini
+package example;
+
+// Menentukan Go package untuk hasil generate kode
+option go_package = "/example;example"; // Ganti dengan path sesuai proyek Anda
+
+// Definisi layanan gRPC
+service ExampleService {
+  // RPC untuk menyapa
+  rpc SayHello (HelloRequest) returns (HelloResponse);
+}
+
+// Pesan untuk permintaan
+message HelloRequest {
+  string name = 1; // Nama pengguna
+}
+
+// Pesan untuk respons
+message HelloResponse {
+  string message = 1; // Pesan balasan
+}
