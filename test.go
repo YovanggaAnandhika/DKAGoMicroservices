@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"dka-go-microservices/generated/example"
+	sys_corporation "dka-go-microservices/generated/services/parking/config"
 	"fmt"
 	"google.golang.org/grpc"
 	"log"
@@ -22,15 +22,15 @@ func main() {
 	}(conn)
 
 	// Create a new ExampleService client
-	client := example.NewExampleServiceClient(conn)
+	client := sys_corporation.NewUserLoginServiceClient(conn)
 
 	// Send a SayHello request
-	req := &example.HelloRequest{Name: "World"}
-	res, err := client.SayHello(context.Background(), req)
+	req := &sys_corporation.GetAllDataRequest{Limit: 1}
+	res, err := client.GetAllData(context.Background(), req)
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
 
 	// Print the response message
-	fmt.Println(res.Message)
+	fmt.Println(res)
 }

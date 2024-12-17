@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+
+// Menentukan paket untuk file .proto ini
+package config;
+
+// Menentukan Go package untuk hasil generate kode
+option go_package = "/services/parking/config;sys_corporation"; // Ganti dengan path sesuai proyek Anda
+
+// Definisi layanan gRPC
+service UserLoginService {
+  // Read
+  rpc GetAllData (GetAllDataRequest) returns (GetAllDataResponse);
+
+}
+
+message ModelData {
+  // @gotags: bson:"_id"
+  string id = 1;
+  // @gotags: bson:"corporation_name"
+  string corporation_name = 2;
+  // @gotags: bson:"corporation_address"
+  string corporation_address = 3;
+  // @gotags: bson:"corporation_phone"
+  string corporation_phone = 4;
+  // @gotags: bson:"corporation_email"
+  string corporation_email = 5;
+  // @gotags: bson:"corporation_status"
+  bool corporation_status = 6;
+}
+
+message GetAllDataRequestQuery {
+  string _id = 1;  // MongoDB _id as bytes;
+}
+
+message GetAllDataRequest {
+  int32 limit = 1;
+  GetAllDataRequestQuery query = 2;
+}
+
+message GetAllDataResponse {
+  bool status = 1;
+  int32 code = 2;
+  string msg = 3;
+  repeated ModelData data = 4;
+  string error = 5;
+}

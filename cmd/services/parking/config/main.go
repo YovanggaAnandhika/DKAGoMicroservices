@@ -1,7 +1,7 @@
 package main
 
 import (
-	"dka-go-microservices/internal/service"
+	"dka-go-microservices/cmd/services/parking/config/services"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -17,28 +17,28 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+	// Create New Server GPRC
 	grpcServer := grpc.NewServer()
-	// Initialize the service server
-	srv := service.NewServer()
-	// Register the service with the gRPC server
-	service.RegisterGRPCServer(grpcServer, srv)
+	go func() {
+		// Adding Registration Services
+		services.Service(grpcServer)
+	}()
 	// Channel to capture termination signal
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
-
 	// Goroutine for serving gRPC
 	go func() {
 		if err := grpcServer.Serve(lis); err != nil {
 			log.Fatalf("failed to serve: %v", err)
 		}
 	}()
-	log.Println("Successfully started microservices")
+	log.Println("SERVER: Successfully started microservices")
 	// Wait for a termination signal
 	<-stop
 	// Gracefully stop the gRPC server
-	log.Println("Shutting down gracefully...")
+	log.Println("SERVER: Shutting down gracefully...")
 	grpcServer.GracefulStop()
 	// Optionally, wait a little to ensure shutdown is clean
 	time.Sleep(time.Second)
-	log.Println("Server stopped.")
+	log.Println("SERVER: Stopped.")
 }
